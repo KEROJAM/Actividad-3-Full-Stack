@@ -29,6 +29,12 @@
       "username": "nuevoUsuario",
       "password": "$2a$10$vYd4f40W2fE0qdYPC94.WuxNQxLmQW79aUkIUMnt3FJHijwHwd6pu",
       "createdAt": "2026-02-18T16:43:20.295Z"
+    },
+    {
+      "id": "17c5c41c-c3ef-4659-9745-45469ccb935d",
+      "username": "deadlockenjoyer",
+      "password": "$2a$10$mCA.FY2JgjW4amuGvHZk2.hVXVyOrePO3Shwq61uaiVDrD0qzkV.G",
+      "createdAt": "2026-02-18T20:29:54.299Z"
     }
   ],
   "sessions": [

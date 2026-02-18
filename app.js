@@ -3,21 +3,25 @@ const API_URL = 'http://localhost:3002/api';
 let token = localStorage.getItem('token');
 
 const authSection = document.getElementById('authSection');
-const tasksSection = document.getElementById('tasksSection');
+const forumSection = document.getElementById('forumSection');
 const logoutBtn = document.getElementById('logoutBtn');
-const tasksList = document.getElementById('tasksList');
-const taskForm = document.getElementById('taskForm');
-const pendingCount = document.getElementById('pendingCount');
-const completedCount = document.getElementById('completedCount');
+const postsList = document.getElementById('postsList');
+const postsCount = document.getElementById('postsCount');
+const postDetail = document.getElementById('postDetail');
+const postContentView = document.getElementById('postContentView');
+const commentsList = document.getElementById('commentsList');
+const backBtn = document.getElementById('backBtn');
 
 const tabs = document.querySelectorAll('.tab');
 const loginForm = document.getElementById('loginForm');
 const registerForm = document.getElementById('registerForm');
 
+let currentPostId = null;
+
 function init() {
   if (token) {
-    showTasks();
-    loadTasks();
+    showForum();
+    loadPosts();
   }
 
   tabs.forEach(tab => {
@@ -27,7 +31,14 @@ function init() {
   loginForm.addEventListener('submit', handleLogin);
   registerForm.addEventListener('submit', handleRegister);
   logoutBtn.addEventListener('click', handleLogout);
-  taskForm.addEventListener('submit', handleAddTask);
+  document.getElementById('postForm').addEventListener('submit', handleCreatePost);
+  document.getElementById('commentForm').addEventListener('submit', handleAddComment);
+  backBtn.addEventListener('click', () => {
+    postDetail.classList.add('hidden');
+    postsList.classList.remove('hidden');
+    document.getElementById('newPostForm').classList.remove('hidden');
+    currentPostId = null;
+  });
 }
 
 function switchTab(tabName) {
@@ -74,8 +85,8 @@ async function handleLogin(e) {
 
     token = data.token;
     localStorage.setItem('token', token);
-    showTasks();
-    loadTasks();
+    showForum();
+    loadPosts();
   } catch (err) {
     showError('Error de conexión');
   }
@@ -112,21 +123,21 @@ function handleLogout() {
   token = null;
   localStorage.removeItem('token');
   authSection.classList.remove('hidden');
-  tasksSection.classList.add('hidden');
+  forumSection.classList.add('hidden');
   logoutBtn.classList.add('hidden');
   loginForm.reset();
   registerForm.reset();
 }
 
-function showTasks() {
+function showForum() {
   authSection.classList.add('hidden');
-  tasksSection.classList.remove('hidden');
+  forumSection.classList.remove('hidden');
   logoutBtn.classList.remove('hidden');
 }
 
-async function loadTasks() {
+async function loadPosts() {
   try {
-    const res = await fetch(`${API_URL}/tasks`, {
+    const res = await fetch(`${API_URL}/posts`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
@@ -136,94 +147,147 @@ async function loadTasks() {
     }
 
     const data = await res.json();
-    renderTasks(data.tasks);
+    renderPosts(data.posts);
   } catch (err) {
-    console.error('Error cargando tareas:', err);
+    console.error('Error cargando publicaciones:', err);
   }
 }
 
-function renderTasks(tasks) {
-  tasksList.innerHTML = '';
-  const pending = tasks.filter(t => !t.completed).length;
-  const completed = tasks.filter(t => t.completed).length;
-  pendingCount.textContent = `${pending} pendiente${pending !== 1 ? 's' : ''}`;
-  completedCount.textContent = `${completed} completada${completed !== 1 ? 's' : ''}`;
+function renderPosts(posts) {
+  postsList.innerHTML = '';
+  postsCount.textContent = `${posts.length} publicacion${posts.length !== 1 ? 'es' : ''}`;
 
-  tasks.forEach(task => {
-    const li = document.createElement('li');
-    li.className = `task-item${task.completed ? ' completed' : ''}`;
-    li.innerHTML = `
-      <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''}>
-      <div class="task-content">
-        <div class="task-title">${escapeHtml(task.title)}</div>
-        ${task.description ? `<div class="task-description">${escapeHtml(task.description)}</div>` : ''}
+  posts.forEach(post => {
+    const div = document.createElement('div');
+    div.className = 'post-item';
+    div.innerHTML = `
+      <div class="post-header">
+        <span class="post-author">${escapeHtml(post.author)}</span>
+        <span class="post-date">${formatDate(post.created_at)}</span>
       </div>
-      <div class="task-actions">
-        <button class="btn-delete" data-id="${task.id}">Eliminar</button>
+      <div class="post-title">${escapeHtml(post.title)}</div>
+      <div class="post-preview">${escapeHtml(post.content.substring(0, 150))}${post.content.length > 150 ? '...' : ''}</div>
+      <div class="post-meta">
+        <span class="comment-count">${post.comment_count || 0} comentario${(post.comment_count || 0) !== 1 ? 's' : ''}</span>
       </div>
     `;
 
-    const checkbox = li.querySelector('.task-checkbox');
-    checkbox.addEventListener('change', () => toggleTask(task.id, checkbox.checked));
-
-    const deleteBtn = li.querySelector('.btn-delete');
-    deleteBtn.addEventListener('click', () => deleteTask(task.id));
-
-    tasksList.appendChild(li);
+    div.addEventListener('click', () => viewPost(post.id));
+    postsList.appendChild(div);
   });
 }
 
-async function handleAddTask(e) {
+async function handleCreatePost(e) {
   e.preventDefault();
-  const title = document.getElementById('taskTitle').value;
-  const description = document.getElementById('taskDescription').value;
+  const title = document.getElementById('postTitle').value;
+  const content = document.getElementById('postContent').value;
+
+  if (!title.trim() || !content.trim()) return;
 
   try {
-    const res = await fetch(`${API_URL}/tasks`, {
+    const res = await fetch(`${API_URL}/posts`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ title, description })
+      body: JSON.stringify({ title, content })
     });
 
     if (res.ok) {
-      document.getElementById('taskTitle').value = '';
-      document.getElementById('taskDescription').value = '';
-      loadTasks();
+      document.getElementById('postTitle').value = '';
+      document.getElementById('postContent').value = '';
+      loadPosts();
     }
   } catch (err) {
-    console.error('Error agregando tarea:', err);
+    console.error('Error creando publicación:', err);
   }
 }
 
-async function toggleTask(id, completed) {
+async function viewPost(postId) {
+  currentPostId = postId;
+  postsList.classList.add('hidden');
+  document.getElementById('newPostForm').classList.add('hidden');
+  postDetail.classList.remove('hidden');
+
   try {
-    await fetch(`${API_URL}/tasks/${id}`, {
-      method: 'PUT',
+    const res = await fetch(`${API_URL}/posts/${postId}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    const data = await res.json();
+    
+    postContentView.innerHTML = `
+      <div class="post-full-header">
+        <span class="post-author">${escapeHtml(data.post.author)}</span>
+        <span class="post-date">${formatDate(data.post.created_at)}</span>
+      </div>
+      <h2 class="post-full-title">${escapeHtml(data.post.title)}</h2>
+      <div class="post-full-content">${escapeHtml(data.post.content)}</div>
+    `;
+
+    renderComments(data.comments || []);
+  } catch (err) {
+    console.error('Error cargando publicación:', err);
+  }
+}
+
+function renderComments(comments) {
+  commentsList.innerHTML = '';
+
+  if (comments.length === 0) {
+    commentsList.innerHTML = '<p class="no-comments">No hay comentarios aún</p>';
+    return;
+  }
+
+  comments.forEach(comment => {
+    const div = document.createElement('div');
+    div.className = 'comment-item';
+    div.innerHTML = `
+      <div class="comment-header">
+        <span class="comment-author">${escapeHtml(comment.author)}</span>
+        <span class="comment-date">${formatDate(comment.created_at)}</span>
+      </div>
+      <div class="comment-content">${escapeHtml(comment.content)}</div>
+    `;
+    commentsList.appendChild(div);
+  });
+}
+
+async function handleAddComment(e) {
+  e.preventDefault();
+  const content = document.getElementById('commentText').value;
+
+  if (!content.trim() || !currentPostId) return;
+
+  try {
+    const res = await fetch(`${API_URL}/posts/${currentPostId}/comments`, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ completed })
+      body: JSON.stringify({ content })
     });
-    loadTasks();
+
+    if (res.ok) {
+      document.getElementById('commentText').value = '';
+      viewPost(currentPostId);
+    }
   } catch (err) {
-    console.error('Error actualizando tarea:', err);
+    console.error('Error agregando comentario:', err);
   }
 }
 
-async function deleteTask(id) {
-  try {
-    await fetch(`${API_URL}/tasks/${id}`, {
-      method: 'DELETE',
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    loadTasks();
-  } catch (err) {
-    console.error('Error eliminando tarea:', err);
-  }
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('es-ES', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
 }
 
 function escapeHtml(text) {

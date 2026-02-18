@@ -4,6 +4,7 @@ const path = require('path');
 const { initDatabase } = require('./config/database');
 const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/tasks');
+const postRoutes = require('./routes/posts');
 const { errorHandler, notFoundHandler, requestLogger } = require('./middleware/errorHandler');
 
 const app = express();
@@ -32,6 +33,7 @@ app.get('/health', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
+app.use('/api/posts', postRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

@@ -1,0 +1,12 @@
+{
+  "posts": [
+    {
+      "id": "1cac1020-5da7-4e45-9cb1-adc319f6c53c",
+      "title": "tema",
+      "content": "sfsdf",
+      "author": "nuevoUsuario",
+      "created_at": "2026-02-18T20:28:39.120Z",
+      "updated_at": "2026-02-18T20:28:39.120Z"
+    }
+  ]
+}

@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To-Do List</title>
+  <title>Foro</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Mis Tareas</h1>
+      <h1>Foro</h1>
       <button id="logoutBtn" class="btn-secondary hidden">Cerrar Sesión</button>
     </header>
 
@@ -46,22 +46,33 @@
       </div>
     </div>
 
-    <div id="tasksSection" class="hidden">
-      <form id="taskForm">
-        <div class="task-input-group">
-          <input type="text" id="taskTitle" placeholder="Nueva tarea..." required>
-          <textarea id="taskDescription" placeholder="Descripción (opcional)"></textarea>
-          <button type="submit" class="btn-add">+</button>
-        </div>
-      </form>
-
-      <div class="tasks-stats">
-        <span id="pendingCount">0 pendientes</span>
-        <span class="separator">•</span>
-        <span id="completedCount">0 completadas</span>
+    <div id="forumSection" class="hidden">
+      <div id="newPostForm">
+        <form id="postForm" class="post-input-group">
+          <input type="text" id="postTitle" placeholder="Título del tema..." required>
+          <textarea id="postContent" placeholder="Contenido de tu publicación..." required></textarea>
+          <button type="submit" class="btn-primary">Publicar</button>
+        </form>
       </div>
 
-      <ul id="tasksList" class="tasks-list"></ul>
+      <div class="posts-stats">
+        <span id="postsCount">0 publicaciones</span>
+      </div>
+
+      <div id="postsList" class="posts-list"></div>
+
+      <div id="postDetail" class="post-detail hidden">
+        <button id="backBtn" class="btn-secondary">← Volver</button>
+        <div id="postContentView" class="post-content-view"></div>
+        <div id="commentsSection">
+          <h3>Comentarios</h3>
+          <div id="commentsList" class="comments-list"></div>
+          <form id="commentForm" class="comment-form">
+            <textarea id="commentText" placeholder="Escribe un comentario..." required></textarea>
+            <button type="submit" class="btn-primary">Comentar</button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 
