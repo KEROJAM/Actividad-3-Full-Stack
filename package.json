@@ -1,7 +1,7 @@
 {
   "name": "todo-api",
   "version": "1.0.0",
-  "description": "API RESTful para gestionar tareas (to-do list)",
+  "description": "API RESTful para gestionar publicaciones y comentarios",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",

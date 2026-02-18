@@ -3,7 +3,6 @@ const session = require('express-session');
 const path = require('path');
 const { initDatabase } = require('./config/database');
 const authRoutes = require('./routes/auth');
-const taskRoutes = require('./routes/tasks');
 const postRoutes = require('./routes/posts');
 const { errorHandler, notFoundHandler, requestLogger } = require('./middleware/errorHandler');
 
@@ -32,7 +31,6 @@ app.get('/health', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
-app.use('/api/tasks', taskRoutes);
 app.use('/api/posts', postRoutes);
 
 app.use(notFoundHandler);
@@ -51,11 +49,6 @@ async function startServer() {
       console.log(`  POST /api/auth/login - Iniciar sesión (recibes JWT)`);
       console.log(`  POST /api/auth/logout - Cerrar sesión`);
       console.log(`  GET  /api/auth/me - Obtener usuario actual`);
-      console.log(`  GET  /api/tasks - Listar tareas (requiere JWT)`);
-      console.log(`  GET  /api/tasks/:id - Obtener tarea por ID (requiere JWT)`);
-      console.log(`  POST /api/tasks - Crear tarea (requiere JWT)`);
-      console.log(`  PUT  /api/tasks/:id - Actualizar tarea (requiere JWT)`);
-      console.log(`  DELETE /api/tasks/:id - Eliminar tarea (requiere JWT)`);
     });
   } catch (error) {
     console.error('Error al iniciar el servidor:', error);
