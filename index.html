@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Mis Tareas</h1>
+      <button id="logoutBtn" class="btn-secondary hidden">Cerrar Sesión</button>
+    </header>
+
+    <div id="authSection">
+      <div class="auth-box">
+        <div class="tabs">
+          <button class="tab active" data-tab="login">Iniciar Sesión</button>
+          <button class="tab" data-tab="register">Registrarse</button>
+        </div>
+
+        <form id="loginForm" class="auth-form">
+          <div class="form-group">
+            <label for="loginUsername">Usuario</label>
+            <input type="text" id="loginUsername" required>
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Contraseña</label>
+            <input type="password" id="loginPassword" required>
+          </div>
+          <button type="submit" class="btn-primary">Entrar</button>
+        </form>
+
+        <form id="registerForm" class="auth-form hidden">
+          <div class="form-group">
+            <label for="registerUsername">Usuario</label>
+            <input type="text" id="registerUsername" required>
+          </div>
+          <div class="form-group">
+            <label for="registerPassword">Contraseña</label>
+            <input type="password" id="registerPassword" required>
+          </div>
+          <button type="submit" class="btn-primary">Registrarse</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="tasksSection" class="hidden">
+      <form id="taskForm">
+        <div class="task-input-group">
+          <input type="text" id="taskTitle" placeholder="Nueva tarea..." required>
+          <textarea id="taskDescription" placeholder="Descripción (opcional)"></textarea>
+          <button type="submit" class="btn-add">+</button>
+        </div>
+      </form>
+
+      <div class="tasks-stats">
+        <span id="pendingCount">0 pendientes</span>
+        <span class="separator">•</span>
+        <span id="completedCount">0 completadas</span>
+      </div>
+
+      <ul id="tasksList" class="tasks-list"></ul>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

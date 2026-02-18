@@ -1,0 +1,31 @@
+{
+  "tasks": [
+    {
+      "id": "58b4a7d1-a9df-44f4-98ba-daba29fb99e2",
+      "title": "Mi primera tarea",
+      "description": "Esta es una tarea de prueba",
+      "completed": false,
+      "userId": "a064f4ce-f0fc-4803-bd09-fb1b3f09fdcd",
+      "createdAt": "2026-02-16T22:54:43.676Z",
+      "updatedAt": "2026-02-16T22:54:43.676Z"
+    },
+    {
+      "id": "70faabc2-dacf-4e58-a0c3-137564a0e7de",
+      "title": "esta es una nueva tarea",
+      "description": "tarea nueva",
+      "completed": false,
+      "userId": "ffe34a07-7766-4eb9-940b-e7473840dfc8",
+      "createdAt": "2026-02-18T16:42:32.366Z",
+      "updatedAt": "2026-02-18T16:42:32.366Z"
+    },
+    {
+      "id": "2fe6e07b-6b43-49cb-9761-f2502e5df810",
+      "title": "otra tarea nueva",
+      "description": "",
+      "completed": true,
+      "userId": "ffe34a07-7766-4eb9-940b-e7473840dfc8",
+      "createdAt": "2026-02-18T16:42:36.698Z",
+      "updatedAt": "2026-02-18T16:42:42.215Z"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "users": [
+    {
+      "id": "user-1",
+      "username": "admin",
+      "password": "$2a$10$xQZ8HwO6fYmP8YmP8YmP8YO1YmP8YmP8YmP8YmP8YmP8YmP8YmP8Ym",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "a064f4ce-f0fc-4803-bd09-fb1b3f09fdcd",
+      "username": "testuser",
+      "password": "$2a$10$tk6jLBnow3SAdv0zrT.IwuiGVOBrVNV6xEDgJroQNtqT/ZfkZp3PG",
+      "createdAt": "2026-02-16T22:54:37.833Z"
+    },
+    {
+      "id": "08796158-d473-46fd-9ab0-ef4b8d24bbc0",
+      "username": "testuser2",
+      "password": "$2a$10$o5hE4uTfv2/8oC9SaCvTauZXT07H2NGCOXCSJhZXRgpZe0Qrtf/EW",
+      "createdAt": "2026-02-16T22:57:23.725Z"
+    },
+    {
+      "id": "ffe34a07-7766-4eb9-940b-e7473840dfc8",
+      "username": "kero",
+      "password": "$2a$10$5z2xl0nDoS92OuPLWJwI5.P/UwVY5s/j0In531.WWgFxmMRkzGIN.",
+      "createdAt": "2026-02-18T16:27:08.308Z"
+    },
+    {
+      "id": "d7ebc42c-3e60-4888-9a4a-8eb0025125af",
+      "username": "nuevoUsuario",
+      "password": "$2a$10$vYd4f40W2fE0qdYPC94.WuxNQxLmQW79aUkIUMnt3FJHijwHwd6pu",
+      "createdAt": "2026-02-18T16:43:20.295Z"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "66acec85-88f4-44c0-ae0e-71a1add65672",
+      "userId": "a064f4ce-f0fc-4803-bd09-fb1b3f09fdcd",
+      "createdAt": "2026-02-16T22:54:40.532Z",
+      "expiresAt": "2026-02-17T22:54:40.532Z"
+    }
+  ]
+}
